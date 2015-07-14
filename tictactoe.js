@@ -18,6 +18,8 @@ app.directive('ticTacToe', [function() {
             ]
             $scope.coordsWinning = []
             $scope.move = function(cell) {
+                if (' ' !== $scope.coords[cell])
+                    return // invalid move
                 if (constants.winner == $scope.status || constants.draw == $scope.status)
                     return // game over
 
