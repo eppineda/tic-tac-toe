@@ -73,16 +73,19 @@ app.directive('ticTacToe', [function() {
                
                 for (var t in tests) {
                     if (win(tests[t], coords)) {
-                        var winning = tests[t]
-
-                        for (var w in winning) {
-                            // todo: set the css class
-                        }
+                        $scope.coordsWinning = tests[t]
                         return true
                     }
                 }
                 return false
             } // isItAWin
+            $scope.statusColor = function(cell) {
+                if (constants.winner === $scope.status) {
+                    if (!$scope.coordsWinning.toString().match(cell))
+                        return constants.ready
+                }
+                return $scope.status
+            }
         } // controller
     } // return
 }])
