@@ -1,22 +1,5 @@
 <div>
-    <style type="text/css">
-    #cell0 { border-top: none; border-left: none; }
-    #cell1 { border-top: none; }
-    #cell2 { border-top: none; border-right: none; }
-    #cell3 { border-left: none; }
-    #cell4 { }
-    #cell5 { border-right: none; }
-    #cell6 { border-left: none; border-bottom: none; }
-    #cell7 { border-bottom: none; }
-    #cell8 { border-bottom: none; border-right: none; }
-    body { background-color: #ffffff; }
-    table { background-color: #000000; border-collapse: collapse; }
-    td { border: solid #000000; background-color: #ffffff; width: 1.0em; height: 1.0em; 
-        text-align: center; }
-    .ready, .playing { background-color: #ffffff; }
-    .winner { background-color: lightgreen; }
-    .draw { background-color: yellow; }
-    </style>
+    <link rel="stylesheet" style="text/css" href="tictactoe.css">
     <table>
         <tr class="row1">
             <td ng-bind="coords[0]" ng-click="move(0)" ng-class="statusColor(0)" id="cell0">
