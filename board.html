@@ -1,0 +1,36 @@
+<div>
+    <style type="text/css">
+    #cell0 { border-top: none; border-left: none; }
+    #cell1 { border-top: none; }
+    #cell2 { border-top: none; border-right: none; }
+    #cell3 { border-left: none; }
+    #cell4 { }
+    #cell5 { border-right: none; }
+    #cell6 { border-left: none; border-bottom: none; }
+    #cell7 { border-bottom: none; }
+    #cell8 { border-bottom: none; border-right: none; }
+    html { background-color: #ffffff; }
+    table { background-color: #000000; border-collapse: collapse; }
+    td { border: solid #000000; background-color: #ffffff; width: 1.0em; text-align: center; }
+    .winner { background-color: lightgreen; }
+    .draw { background-color: yellow; }
+    </style>
+    <table>
+        <tr class="row1">
+            <td ng-bind="coords[0]" ng-click="move()" id="cell0">&nbsp;</td>
+            <td ng-bind="coords[1]" ng-click="move()" id="cell1">&nbsp;</td>
+            <td ng-bind="coords[2]" ng-click="move()" id="cell2">&nbsp;</td>
+        </tr>
+        <tr class="row2">
+            <td ng-bind="coords[3]" ng-click="move()" id="cell3">&nbsp;</td>
+            <td ng-bind="coords[4]" ng-click="move()" id="cell4">&nbsp;</td>
+            <td ng-bind="coords[5]" ng-click="move()" id="cell5">&nbsp;</td>
+        </tr>
+        <tr class="row3">
+            <td ng-bind="coords[6]" ng-click="move()" id="cell6">&nbsp;</td>
+            <td ng-bind="coords[7]" ng-click="move()" id="cell7">&nbsp;</td>
+            <td ng-bind="coords[8]" ng-click="move()" id="cell8">&nbsp;</td>
+        </tr>
+    </table>
+    <p ng-bind="gameStatus" />
+</div>
