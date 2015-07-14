@@ -64,7 +64,11 @@ app.directive('ticTacToe', [function() {
                 var win = function(cells, coords) {
                     if (3 !== cells.length)
                         throw { name:'GameException', msg:'not evaluating 3 cells in a row' }
-                    return coords[cells[0]] === coords[cells[1]] === coords[cells[2]] 
+                    if (' ' == coords[cells[0]] || ' ' == coords[cells[1]] || ' ' == coords[cells[2]])
+                        return false
+                    if (coords[cells[0]] === coords[cells[1]] && coords[cells[0]] === coords[cells[2]])
+                        return true
+                    return false
                 }
                
                 for (var t in tests) {
