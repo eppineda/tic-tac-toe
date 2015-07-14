@@ -23,6 +23,7 @@ app.directive('ticTacToe', [function() {
 
 // still playing
 
+                $scope.status = constants.playing
                 $scope.coords[cell] = $scope.next
                 if ('X' === $scope.next)
                     $scope.next = 'O'
