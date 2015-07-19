@@ -1,14 +1,15 @@
 var app = angular.module('tic-tac-toe', [])
 
 app.directive('ticTacToe', [function() {
-    var constants = { "ready":"ready", "playing":"playing", "winner":"winner", "draw":"draw" }
+    var constants = { "waiting":"waiting", "ready":"ready", "playing":"playing", 
+        "winner":"winner", "draw":"draw" }
     return {
         restrict:'E',
         templateUrl:'board.html',
         replace:true,
         scope:{ },
         controller:function($scope) {
-            $scope.status = constants.ready
+            $scope.status = constants.waiting
             $scope.next = 'X'
             $scope.turns = 0
             $scope.coords = [

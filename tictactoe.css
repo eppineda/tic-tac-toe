@@ -7,7 +7,7 @@
 #cell6 { border-left: none; border-bottom: none; }
 #cell7 { border-bottom: none; }
 #cell8 { border-bottom: none; border-right: none; }
-body { background-color: #ffffff; }
+body { background-color: #ffffff; zoom: 4; }
 table { background-color: #000000; border-collapse: collapse; }
 td { border: solid #000000; background-color: #ffffff; width: 1.0em; height: 1.0em; 
     text-align: center; }
