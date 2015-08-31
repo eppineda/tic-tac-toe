@@ -1,7 +1,7 @@
 var app = angular.module('tic-tac-toe', [])
 
 app.directive('ticTacToe', [function() {
-    var constants = { "waiting":"waiting", "ready":"ready", "playing":"playing", 
+    var constants = { "waiting":"waiting", "ready":"ready", "playing":"playing",
         "winner":"winner", "draw":"draw" }
     return {
         restrict:'E',
@@ -9,7 +9,7 @@ app.directive('ticTacToe', [function() {
         replace:true,
         scope:{ },
         controller:function($scope) {
-            $scope.status = constants.waiting
+            $scope.status = ''
             $scope.next = 'X'
             $scope.turns = 0
             $scope.coords = [
@@ -56,12 +56,12 @@ app.directive('ticTacToe', [function() {
                 var tests = []
                 var row1win = [ 0, 1, 2 ]; tests.push(row1win)
                 var row2win = [ 3, 4, 5 ]; tests.push(row2win)
-                var row3win = [ 6, 7, 8 ]; tests.push(row3win) 
-                var col1win = [ 0, 3, 6 ]; tests.push(col1win) 
-                var col2win = [ 1, 4, 7 ]; tests.push(col2win) 
-                var col3win = [ 2, 5, 8 ]; tests.push(col3win) 
-                var dia1win = [ 0, 4, 8 ]; tests.push(dia1win) 
-                var dia2win = [ 2, 4, 6 ]; tests.push(dia2win) 
+                var row3win = [ 6, 7, 8 ]; tests.push(row3win)
+                var col1win = [ 0, 3, 6 ]; tests.push(col1win)
+                var col2win = [ 1, 4, 7 ]; tests.push(col2win)
+                var col3win = [ 2, 5, 8 ]; tests.push(col3win)
+                var dia1win = [ 0, 4, 8 ]; tests.push(dia1win)
+                var dia2win = [ 2, 4, 6 ]; tests.push(dia2win)
                 var win = function(cells, coords) {
                     if (3 !== cells.length)
                         throw { name:'GameException', msg:'not evaluating 3 cells in a row' }
@@ -71,7 +71,7 @@ app.directive('ticTacToe', [function() {
                         return true
                     return false
                 }
-               
+
                 for (var t in tests) {
                     if (win(tests[t], coords)) {
                         $scope.coordsWinning = tests[t]
