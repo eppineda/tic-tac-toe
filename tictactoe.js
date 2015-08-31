@@ -7,7 +7,7 @@ app.directive('ticTacToe', [function() {
         restrict:'E',
         templateUrl:'board.html',
         replace:true,
-        scope:{ },
+        scope:{},
         controller:function($scope) {
             $scope.status = ''
             $scope.next = 'X'
