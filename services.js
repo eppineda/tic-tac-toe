@@ -21,7 +21,8 @@ function(
         },
         create:function(playerName) {
             // assigned 'X' -- first player
-        }
+        },
+        playAgain:function() {}
     }
 }])
 .factory('FirebaseAccess', ['$firebaseObject', function($firebaseObject) {
