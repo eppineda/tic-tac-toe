@@ -2,7 +2,19 @@ angular.module('tic-tac-toe.services', [])
 .constant('URL', 'https://tictactoe-eppineda.firebaseio.com')
 .constant('X', 'X')
 .constant('O', 'O')
-.factory('Game', [function() {
+.constant('TIMEOUT', 60)
+.factory('Game', [
+'$firebaseArray',
+'$firebaseObject',
+'$q',
+'$timeout',
+'FirebaseAccess',
+function(
+    $firebaseArray,
+    $firebaseObject,
+    $q,
+    $timeout,
+    FirebaseAccess) {
     return {
         join:function(playerName) {
             // assigned 'O' -- second player
