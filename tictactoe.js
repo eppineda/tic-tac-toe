@@ -1,4 +1,4 @@
-angular.module('tic-tac-toe', ['vesparny.fancyModal'])
+angular.module('tic-tac-toe', ['firebase', 'vesparny.fancyModal'])
 .directive('ticTacToe', [function() {
     var constants = { "waiting":"waiting", "ready":"ready", "playing":"playing",
         "winner":"winner", "draw":"draw" }
@@ -91,4 +91,8 @@ angular.module('tic-tac-toe', ['vesparny.fancyModal'])
 }])
 .controller('GameCtrl', ['$fancyModal', function($fancyModal) {
     $fancyModal.open({ templateUrl: 'modal.html' })
+/*
+    if (opponent.found) this is a firebase object e.g. { location:'us', marker:'O', found:true }
+        $fancyModal.close()
+*/
 }])
