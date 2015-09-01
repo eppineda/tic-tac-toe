@@ -1,6 +1,5 @@
-var app = angular.module('tic-tac-toe', [])
-
-app.directive('ticTacToe', [function() {
+angular.module('tic-tac-toe', ['vesparny.fancyModal'])
+.directive('ticTacToe', [function() {
     var constants = { "waiting":"waiting", "ready":"ready", "playing":"playing",
         "winner":"winner", "draw":"draw" }
     return {
@@ -89,4 +88,7 @@ app.directive('ticTacToe', [function() {
             }
         } // controller
     } // return
+}])
+.controller('GameCtrl', ['$fancyModal', function($fancyModal) {
+    $fancyModal.open({ templateUrl: 'modal.html'})
 }])
