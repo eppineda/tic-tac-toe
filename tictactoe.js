@@ -90,5 +90,5 @@ angular.module('tic-tac-toe', ['vesparny.fancyModal'])
     } // return
 }])
 .controller('GameCtrl', ['$fancyModal', function($fancyModal) {
-    $fancyModal.open({ templateUrl: 'modal.html'})
+    $fancyModal.open({ templateUrl: 'modal.html' })
 }])
