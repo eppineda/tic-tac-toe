@@ -16,10 +16,3 @@ td { border: solid #000000; background-color: #ffffff; width: 21px; height: 21px
 .ready, .playing { background-color: #ffffff; }
 .winner { background-color: lightgreen; }
 .draw { background-color: yellow; }
-.modal {
-    background:rgba(0,0,0,0.8);
-    color:#ffffff;
-    opacity:0;
-    text-align:center;
-    z-index:99999;
-}
