@@ -17,7 +17,7 @@ function(
     FirebaseAccess) {
     return {
         join:function(playerName) {
-            // assigned 'O' -- second player
+// assigned 'O' -- another player already waiting
             var deferred = $q.defer()
             var waiting = $firebaseArray(FirebaseAccess.waiting())
 
@@ -37,9 +37,11 @@ function(
             return deferred.promise
         },
         create:function(playerName) {
-            // assigned 'X' -- first player
+// assigned 'X' -- another player has arrived
         },
-        playAgain:function() {}
+        playAgain:function() {
+// reverse markers -- play the same person
+        }
     }
 }])
 .factory('FirebaseAccess', [
