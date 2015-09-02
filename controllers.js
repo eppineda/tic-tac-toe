@@ -10,7 +10,7 @@ function($fancyModal, $scope, Game) {
     Game.join($scope.player.name).then(
         function(success) {
             var waiting = success
-            // todo: get next person waiting and create game with that person
+            // todo: this person is waiting. create a game with that person.
             console.log(waiting)
         },
         function(failure) {

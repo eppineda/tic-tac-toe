@@ -26,7 +26,12 @@ function(
                 if (1 > waiting.length)
                     deferred.reject(waiting.length)
                 else {
-                    deferred.resolve(waiting)
+                    var next = {}
+
+                    next.ip = waiting[0]
+                    next.who = waiting[0].who
+                    waiting.$remove(0)
+                    deferred.resolve(next)
                 }
             }, 1500)
             return deferred.promise
