@@ -38,6 +38,10 @@ function(
         },
         create:function(playerName) {
 // assigned 'X' -- another player has arrived
+            var deferred = $q.defer()
+
+            deferred.solve({ who:'who', ip:'127.0.0.1' })
+            return deferred.promise
         },
         playAgain:function() {
 // reverse markers -- play the same person
