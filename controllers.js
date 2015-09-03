@@ -4,14 +4,12 @@ angular.module('tic-tac-toe.controllers', ['firebase', 'vesparny.fancyModal'])
 '$scope',
 'Game',
 function($fancyModal, $scope, Game) {
-    $scope.player = {}
+    $scope.player = { name:'player' }
     $fancyModal.open({ templateUrl: 'modal.html' })
 
     Game.join($scope.player.name).then(
         function(success) {
-            var waiting = success
-            // todo: this person is waiting. create a game with that person.
-            console.log(waiting)
+            console.log(success)
         },
         function(failure) {
             console.error(failure)

@@ -15,24 +15,57 @@ function(
     $q,
     $timeout,
     FirebaseAccess) {
+    var newGame = function(X, O) {
+        var deferred = $q.defer()
+        var games = $firebaseArray(FirebaseAccess.games()) /* todo: possible
+            race condition */
+        var constants = { 'waiting':'waiting', 'playing':'playing',
+            'win':'win', 'draw':'draw' }
+
+        $timeout(function() {
+            var game = {
+                status:constants.waiting,
+                players:[
+                    { who:X.who, ip:X.ip },
+                    { who:O.who, ip:O.ip }
+                ],
+                active:{ who:X.who, grid:-1 } // -1 means turn not taken
+            }
+            games.$add(game).then(
+                function(success) {
+// new game added
+                    deferred.resolve(success)
+                },
+                function(failure) { deferred.reject(failure) },
+                function(update) { console.log(update) }
+            )
+        }, 1500)
+        return deferred.promise
+    } // newGame
+
     return {
         join:function(playerName) {
-// assigned 'O' -- another player already waiting
             var deferred = $q.defer()
             var waiting = $firebaseArray(FirebaseAccess.waiting())
+            var promises = []
 
             $timeout(function() {
                 deferred.notify('retrieving names of players already waiting')
                 if (1 > waiting.length)
                     deferred.reject(waiting.length)
                 else {
-                    var next = {}
+// assigned 'O' -- another player already waiting
+                    deferred.resolve(waiting[0])
 
-                    next.ip = waiting[0]
-                    next.who = waiting[0].who
+                    var you = { who:playerName, ip:'127.0.0.1' }
+                    var opponent = {}
+
+                    opponent.ip = waiting[0]
+                    opponent.who = waiting[0].who
                     waiting.$remove(0)
-                    deferred.resolve(next)
+                    promises.push(newGame(opponent, you))
                 }
+                promises.push(deferred.promise)
             }, 1500)
             return deferred.promise
         },
