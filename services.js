@@ -15,59 +15,53 @@ function(
     $q,
     $timeout,
     FirebaseAccess) {
-    var newGame = function(X, O) {
-        var deferred = $q.defer()
-        var games = $firebaseArray(FirebaseAccess.games()) /* todo: possible
-            race condition */
-        var constants = { 'waiting':'waiting', 'playing':'playing',
-            'win':'win', 'draw':'draw' }
-
-        $timeout(function() {
-            var game = {
-                status:constants.waiting,
-                players:[
-                    { who:X.who, ip:X.ip },
-                    { who:O.who, ip:O.ip }
-                ],
-                active:{ who:X.who, grid:-1 } // -1 means turn not taken
-            }
-            games.$add(game).then(
-                function(success) {
-// new game added
-                    deferred.resolve(success)
-                },
-                function(failure) { deferred.reject(failure) },
-                function(update) { console.log(update) }
-            )
-        }, 1500)
-        return deferred.promise
-    } // newGame
-
     return {
+        create:function(X, O) {
+            var deferred = $q.defer()
+            var games = $firebaseArray(FirebaseAccess.games()) /* todo: possible
+                race condition */
+            var constants = { 'waiting':'waiting', 'playing':'playing',
+                'win':'win', 'draw':'draw' }
+
+            $timeout(function() {
+                var game = {
+                    status:constants.waiting,
+                    players:[
+                        { who:X.who, ip:X.ip },
+                        { who:O.who, ip:O.ip }
+                    ],
+                    active:{ who:X.who, grid:-1 } // -1 means turn not taken
+                }
+
+                deferred.notify('joining', X.who)
+                games.$add(game).then(
+                    function(success) {
+// create game added
+                        deferred.resolve(success)
+                    },
+                    function(failure) { deferred.reject(failure) },
+                    function(update) { console.log(update) }
+                )
+            }, 1500)
+            return deferred.promise
+        }, // create
         join:function(playerName) {
             var deferred = $q.defer()
             var waiting = $firebaseArray(FirebaseAccess.waiting())
-            var promises = []
 
             $timeout(function() {
-                deferred.notify('retrieving names of players already waiting')
+                deferred.notify('searching for another player')
                 if (1 > waiting.length)
                     deferred.reject(waiting.length)
                 else {
-// assigned 'O' -- another player already waiting
-                    deferred.resolve(waiting[0])
+// another player found
+                    var opponent = { who:waiting[0].who, ip:waiting[0].ip }
 
-                    var you = { who:playerName, ip:'127.0.0.1' }
-                    var opponent = {}
-
-                    opponent.ip = waiting[0]
-                    opponent.who = waiting[0].who
                     waiting.$remove(0)
-                    promises.push(newGame(opponent, you))
+                    deferred.resolve(opponent)
                 }
-                promises.push(deferred.promise)
             }, 1500)
-            return $q.all(promises)
+            return deferred.promise
         }, // join
         wait:function(playerName) {
 // wait for another player

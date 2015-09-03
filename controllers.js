@@ -1,15 +1,28 @@
 angular.module('tic-tac-toe.controllers', ['firebase', 'vesparny.fancyModal'])
 .controller('GameCtrl', [
 '$fancyModal',
+'$firebaseObject',
 '$scope',
 'Game',
-function($fancyModal, $scope, Game) {
+function($fancyModal, $firebaseObject, $scope, Game) {
     $scope.player = { name:'player' }
     $fancyModal.open({ templateUrl: 'modal.html' })
 
     Game.join($scope.player.name).then(
         function(success) {
-            console.log(success)
+            var opponent = success
+            var you = { who:$scope.player.name,
+                ip:'127.0.0.1' /* todo: get the ip address */}
+
+            Game.create(opponent, you).then(
+                function(success) {
+                    var game = $firebaseObject(success)// newly-created in firebase
+
+                    console.log(game)
+                },
+                function(failure) { console.error(failure) },
+                function(update) { console.log(update) }
+            )
         },
         function(failure) {
             console.error(failure)
