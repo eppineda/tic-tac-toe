@@ -10,12 +10,14 @@ function($fancyModal, $firebaseObject, $scope, Game) {
 
     Game.join($scope.player.name).then(
         function(success) {
+// joining another player, who was already waiting
             var opponent = success
             var you = { who:$scope.player.name,
                 ip:'127.0.0.1' /* todo: get the ip address */}
 
             Game.create(opponent, you).then(
                 function(success) {
+// game created
                     var game = $firebaseObject(success)// newly-created in firebase
 
                     console.log(game)
