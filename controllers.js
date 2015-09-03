@@ -25,7 +25,7 @@ function($fancyModal, $firebaseObject, $scope, Game) {
 // game created
                     var game = $firebaseObject(success)// newly-created in firebase
 
-                    console.log(game)
+                    $fancyModal.close()
                 },
                 function(failure) { console.error(failure) },
                 function(update) { console.log(update) }
