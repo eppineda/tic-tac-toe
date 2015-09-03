@@ -6,7 +6,7 @@ angular.module('tic-tac-toe.controllers', ['firebase', 'vesparny.fancyModal'])
 'Game',
 function($fancyModal, $firebaseObject, $scope, Game) {
     $scope.player = { name:'player' }
-    $fancyModal.open({ templateUrl: 'modal.html' })
+    $fancyModal.open({ templateUrl: 'modal.html', scope:$scope })
 
     Game.join($scope.player.name).then(
         function(success) {
@@ -15,6 +15,11 @@ function($fancyModal, $firebaseObject, $scope, Game) {
             var you = { who:$scope.player.name,
                 ip:'127.0.0.1' /* todo: get the ip address */}
 
+            if (opponent.who.toLowerCase() === you.who.toLowerCase()) {
+                // unique names needed for tracking turns
+                you.who = you.who + '2'
+                $scope.player.name = you.who
+            }
             Game.create(opponent, you).then(
                 function(success) {
 // game created
