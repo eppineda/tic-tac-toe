@@ -67,13 +67,14 @@ function(
                 }
                 promises.push(deferred.promise)
             }, 1500)
-        create:function(playerName) {
-// assigned 'X' -- another player has arrived
             return $q.all(promises)
         }, // join
+        wait:function(playerName) {
+// wait for another player
             var deferred = $q.defer()
 
             deferred.solve({ who:'who', ip:'127.0.0.1' })
+            // todo: watch waiting in firebase
             return deferred.promise
         },
         playAgain:function() {
