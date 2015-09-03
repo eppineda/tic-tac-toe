@@ -33,7 +33,7 @@ function(
                     active:{ who:X.who, grid:-1 } // -1 means turn not taken
                 }
 
-                deferred.notify('joining', X.who)
+                deferred.notify('joining ' + X.who)
                 games.$add(game).then(
                     function(success) {
 // create game added
