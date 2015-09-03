@@ -63,12 +63,29 @@ function(
             }, 1500)
             return deferred.promise
         }, // join
-        wait:function(playerName) {
+        wait:function(player) {
 // wait for another player
             var deferred = $q.defer()
+            var waiting = $firebaseArray(FirebaseAccess.waiting())
 
-            deferred.solve({ who:'who', ip:'127.0.0.1' })
-            // todo: watch waiting in firebase
+            $timeout(function() {
+                deferred.notify('waiting for another player')
+                if ('undefined' === typeof waiting) {
+                    deferred.reject('could not reach firebase')
+                }
+                else if (0 < waiting.length) {
+                    deferred.reject(waiting.length) // should have joined instead
+                }
+                {
+                    console.log(player)
+                    waiting.$add(player).then(
+                        function(success) {
+// added to wait queue
+                            deferred.resolve(success)
+                        }
+                    )
+                }
+            }, 1500)
             return deferred.promise
         },
         playAgain:function() {
@@ -82,7 +99,7 @@ function(FIREBASE_URL) {
     var refGames = new Firebase(FIREBASE_URL + '/games')
     var refWaiting = new Firebase(FIREBASE_URL + '/waiting')
     return {
-        games:function() { return refGames},
+        games:function() { return refGames },
         waiting:function() { return refWaiting }
     }
 }])

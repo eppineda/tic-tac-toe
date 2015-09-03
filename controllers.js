@@ -25,34 +25,32 @@ function($fancyModal, $firebaseObject, $scope, Game) {
                 function(failure) { console.error(failure) },
                 function(update) { console.log(update) }
             )
-        },
+        }, // join successful
         function(failure) {
+// no one to play with
             console.error(failure)
 
-            var waitingList = [] // todo: firebase
+            var you = { who:$scope.player.name,
+                ip:'127.0.0.1' /* todo: get the ip address */}
             var continueWaiting = function() {
                 // todo: ask to continue waiting for another player
                 return false
             }
-            var playerJoined = function(waitingList) {
-                if ([] === waitingList) return false
-            }
 
-            while (continueWaiting()) {
-                $timeout(function() {
-                    if (playerJoined(waitingList)) {
-                        Game.create($scope.player.name).then(
-                            function(success) {},
-                            function(failure) {},
-                            function(update) {}
-                        )
-                    }
-                }, 60000)
-            } // while
+            Game.wait(you).then(
+                function(success) {
+// waiting for another player to join
+                    var you = $firebaseObject(success)
+
+                    console.log('now in wait queue', you)
+                    while (continueWaiting()) {
+                    } // while
+                },
+                function(failure) { console.error(failure) },
+                function(update) { console.log(update) }
+            )
         },
-        function(update){
-            console.log(update)
-        }
+        function(update) { console.log(update) }
     )
 /*
     if (opponent.found) this is a firebase object e.g. { location:'us', marker:'O', found:true }
