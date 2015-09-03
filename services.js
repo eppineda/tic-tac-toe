@@ -67,10 +67,10 @@ function(
                 }
                 promises.push(deferred.promise)
             }, 1500)
-            return deferred.promise
-        },
         create:function(playerName) {
 // assigned 'X' -- another player has arrived
+            return $q.all(promises)
+        }, // join
             var deferred = $q.defer()
 
             deferred.solve({ who:'who', ip:'127.0.0.1' })
