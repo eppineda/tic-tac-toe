@@ -26,6 +26,12 @@ function($fancyModal, $firebaseObject, $scope, Game) {
                     var game = $firebaseObject(success)// newly-created in firebase
 
                     $fancyModal.close()
+                    game.$loaded().then(
+                        function(success) {
+                            game.status = Game.constants.playing
+                            game.$save()
+                        }
+                    )
                 },
                 function(failure) { console.error(failure) },
                 function(update) { console.log(update) }
@@ -57,8 +63,4 @@ function($fancyModal, $firebaseObject, $scope, Game) {
         },
         function(update) { console.log(update) }
     )
-/*
-    if (opponent.found) this is a firebase object e.g. { location:'us', marker:'O', found:true }
-        $fancyModal.close()
-*/
 }])
