@@ -17,7 +17,10 @@ angular.module('tic-tac-toe.providers', [])
                 ' ', ' ', ' '
             ]
             $scope.coordsWinning = []
+            $scope.isDisabled = true
             $scope.move = function(cell) {
+                if ($scope.isDisabled)
+                    return // not allowed to take a turn
                 if (' ' !== $scope.coords[cell])
                     return // invalid move
                 if (constants.winner == $scope.status || constants.draw == $scope.status)
