@@ -1,7 +1,5 @@
 angular.module('tic-tac-toe.services', [])
 .constant('FIREBASE_URL', 'https://tictactoe-eppineda.firebaseio.com')
-.constant('X', 'X')
-.constant('O', 'O')
 .constant('TIMEOUT', 60)
 .constant('WAITING', 'waiting')
 .factory('Game', [
@@ -20,7 +18,7 @@ function(
     WAITING) {
     return {
         constants:{ 'waiting':'waiting', 'playing':'playing',
-                'win':'win', 'draw':'draw' },
+                'win':'win', 'draw':'draw', 'X':'X', 'O':'O' },
         create:function(X, O) {
             var deferred = $q.defer()
             var games = $firebaseArray(FirebaseAccess.games()) /* todo: possible
