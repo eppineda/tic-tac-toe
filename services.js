@@ -3,29 +3,32 @@ angular.module('tic-tac-toe.services', [])
 .constant('X', 'X')
 .constant('O', 'O')
 .constant('TIMEOUT', 60)
+.constant('WAITING', 'waiting')
 .factory('Game', [
 '$firebaseArray',
 '$firebaseObject',
 '$q',
 '$timeout',
 'FirebaseAccess',
+'WAITING',
 function(
     $firebaseArray,
     $firebaseObject,
     $q,
     $timeout,
-    FirebaseAccess) {
+    FirebaseAccess,
+    WAITING) {
     return {
+        constants:{ 'waiting':'waiting', 'playing':'playing',
+                'win':'win', 'draw':'draw' },
         create:function(X, O) {
             var deferred = $q.defer()
             var games = $firebaseArray(FirebaseAccess.games()) /* todo: possible
                 race condition */
-            var constants = { 'waiting':'waiting', 'playing':'playing',
-                'win':'win', 'draw':'draw' }
 
             $timeout(function() {
                 var game = {
-                    status:constants.waiting,
+                    status:WAITING,
                     players:[
                         { who:X.who, ip:X.ip },
                         { who:O.who, ip:O.ip }
