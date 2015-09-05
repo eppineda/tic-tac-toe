@@ -41,9 +41,9 @@ function($fancyModal, $firebaseArray, $firebaseObject, $rootScope, $scope,
                         function(success) {
                             game.status = Game.constants.playing
                             game.$save()
-                            $scope.yourTurn = $scope.player.name === whoseTurn(game)
-                            $scope.$watch('yourTurn', function(newVal, oldVal) {
-                                console.log('yourTurn', newVal)
+                            game.$watch(function(event) {
+                                console.log(event)
+                                $scope.yourTurn = $scope.player.name === whoseTurn(game)
                             })
                         }
                     )
