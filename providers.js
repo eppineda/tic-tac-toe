@@ -89,6 +89,10 @@ angular.module('tic-tac-toe.providers', [])
                 }
                 return $scope.status
             }
+            $scope.disableClick = function() {
+                $scope.isDisabled = true;
+                return false;
+            }
         } // controller
     } // return
 }])
