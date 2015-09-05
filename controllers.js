@@ -15,7 +15,6 @@ function($fancyModal, $firebaseArray, $firebaseObject, $rootScope, $scope,
 
     $scope.player = { name:'player' }
     $scope.yourTurn = false
-    $scope.games = []
     $fancyModal.open({ templateUrl: 'modal.html' })
     $rootScope.$on('$fancyModal.closed', function (e, id) {
         console.log('$fancyModal closed: ' + id);
@@ -72,8 +71,8 @@ function($fancyModal, $firebaseArray, $firebaseObject, $rootScope, $scope,
                     var game = Game.get(you.game)
 
                     console.log('now in wait queue', you)
-                    $scope.$watch('games', function(newVal, oldVal) {
-                        console.log(games.length, 'games')
+                    games.$watch(function(event) {
+                        console.log(event)
                     })
 /*
                     game.then(
