@@ -19,13 +19,13 @@ function(
     return {
         constants:{ 'waiting':'waiting', 'playing':'playing',
                 'win':'win', 'draw':'draw', 'X':'X', 'O':'O' },
-        create:function(X, O) {
+        create:function(X, O, newId) {
             var deferred = $q.defer()
-            var games = $firebaseArray(FirebaseAccess.games()) /* todo: possible
-                race condition */
+            var games = $firebaseArray(FirebaseAccess.games())
 
             $timeout(function() {
                 var game = {
+                    id:newId,
                     status:WAITING,
                     players:[
                         { who:X.who, ip:X.ip },
@@ -56,7 +56,8 @@ function(
                     deferred.reject(waiting.length)
                 else {
 // another player found
-                    var opponent = { who:waiting[0].who, ip:waiting[0].ip }
+                    var opponent = { who:waiting[0].who, ip:waiting[0].ip,
+                        game:waiting[0].game }
 
                     waiting.$remove(0)
                     deferred.resolve(opponent)
@@ -78,6 +79,7 @@ function(
                     deferred.reject(waiting.length) // should have joined instead
                 }
                 {
+                    player.game = Date.now() // to locate game later
                     console.log(player)
                     waiting.$add(player).then(
                         function(success) {
@@ -85,6 +87,20 @@ function(
                             deferred.resolve(success)
                         }
                     )
+                }
+            }, 1500)
+            return deferred.promise
+        },
+        get:function(id) {
+            var deferred = $q.defer()
+            var game = $firebaseArray(FirebaseAccess.games())
+
+            $timeout(function() {
+                deferred.notify('retrieving game')
+                if ('undefined' === game) { deferred.reject('unable to reach firebase') }
+                else if (1 !== game.length) { deferred.reject('game not found')}
+                else {
+                    deferred.resolve($firebaseObject(game))
                 }
             }, 1500)
             return deferred.promise
