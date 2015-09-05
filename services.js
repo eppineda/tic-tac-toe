@@ -92,15 +92,19 @@ function(
             return deferred.promise
         },
         get:function(id) {
+            if ('undefined' === typeof id)
+                throw { name:'GameException', msg:'id not specified' }
+                
             var deferred = $q.defer()
-            var game = $firebaseArray(FirebaseAccess.games())
+            var game = $firebaseArray(FirebaseAccess.games().orderByChild('id').equalTo(id))
+                 /* should get exactly 1 */
 
             $timeout(function() {
                 deferred.notify('retrieving game')
                 if ('undefined' === game) { deferred.reject('unable to reach firebase') }
                 else if (1 !== game.length) { deferred.reject('game not found')}
                 else {
-                    deferred.resolve($firebaseObject(game))
+                    deferred.resolve($firebaseObject(game[0]))
                 }
             }, 1500)
             return deferred.promise
