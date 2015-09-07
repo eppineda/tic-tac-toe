@@ -8,9 +8,11 @@ angular.module('tic-tac-toe.controllers', ['firebase', 'vesparny.fancyModal'])
 '$scope',
 'FirebaseAccess',
 'Game',
-function($fancyModal, $firebaseArray, $firebaseObject, $rootScope, $scope,
-    FirebaseAccess, Game) {
+'TIMER_WAIT',
+function($fancyModal, $firebaseArray, $firebaseObject, $q, $rootScope, $scope,
+    $timeout, FirebaseAccess, Game, TIMER_WAIT) {
     var whoseTurn = function(game) {
+        console.log('whoseTurn', game)
         return game['active'].who
     }
 
