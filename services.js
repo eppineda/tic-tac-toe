@@ -1,6 +1,5 @@
 angular.module('tic-tac-toe.services', [])
 .constant('FIREBASE_URL', 'https://tictactoe-eppineda.firebaseio.com')
-.constant('TIMEOUT', 60)
 .constant('WAITING', 'waiting')
 .factory('Game', [
 '$firebaseArray',
@@ -51,7 +50,7 @@ function(
             var waiting = $firebaseArray(FirebaseAccess.waiting())
 
             $timeout(function() {
-                deferred.notify('searching for another player')
+                deferred.notify('searching for a game')
                 if (1 > waiting.length)
                     deferred.reject(waiting.length)
                 else {
@@ -94,7 +93,7 @@ function(
         get:function(id) {
             if ('undefined' === typeof id)
                 throw { name:'GameException', msg:'id not specified' }
-                
+
             var deferred = $q.defer()
             var game = $firebaseArray(FirebaseAccess.games().orderByChild('id').equalTo(id))
                  /* should get exactly 1 */

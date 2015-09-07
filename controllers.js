@@ -1,4 +1,5 @@
 angular.module('tic-tac-toe.controllers', ['firebase', 'vesparny.fancyModal'])
+.constant('TIMER_WAIT', 10000)
 .controller('GameCtrl', [
 '$fancyModal',
 '$firebaseArray',
