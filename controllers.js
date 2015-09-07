@@ -4,8 +4,10 @@ angular.module('tic-tac-toe.controllers', ['firebase', 'vesparny.fancyModal'])
 '$fancyModal',
 '$firebaseArray',
 '$firebaseObject',
+'$q',
 '$rootScope',
 '$scope',
+'$timeout',
 'FirebaseAccess',
 'Game',
 'TIMER_WAIT',
@@ -59,38 +61,59 @@ function($fancyModal, $firebaseArray, $firebaseObject, $q, $rootScope, $scope,
 // no one to play with
             console.error(failure)
 
-            var you = { who:$scope.player.name,
-                ip:'127.0.0.1' /* todo: get the ip address */}
             var continueWaiting = function() {
-                // todo: ask to continue waiting for another player
-                return false
+                var keepWaiting = false
+                $timeout(function() {
+                    // todo: ask to continue waiting for another player
+                    keepWaiting = false
+                }, TIMER_WAIT)
+                return keepWaiting
             }
+            var playerArrival = function(gameid) {
+                var deferred = $q.defer()
+                var games = $firebaseArray(FirebaseAccess.games().
+                    orderByChild('id').equalTo(gameid))
+
+                $timeout(function() {
+                    deferred.notify('monitoring list of games')
+                    games.$loaded(function(success) {
+                        games.$watch(
+                            function(eventObj) {
+                                if ('child_added' === eventObj.event) {
+                                    var game = $firebaseObject(eventObj.key) // todo: exception
+
+                                    game.$loaded(function() {
+                                        console.log(game)
+                                        deferred.resolve(game)
+                                    })
+                                }
+                            },
+                            function(failure) { deferred.reject(failure) }
+                        )
+                    })
+                }, 5000)
+                return deferred.promise
+            } // playerArrival
+            var you = { who:$scope.player.name,
+                ip:'127.0.0.1' /* todo: get the ip address */ }
 
             Game.wait(you).then(
                 function(success) {
-// waiting for another player to join
-                    var you = $firebaseObject(success)
-                    var games = $firebaseArray(FirebaseAccess.games())
-                    var game = Game.get(you.game)
+// waiting for another player
+                    var waiting = $firebaseObject(success)
 
-                    console.log('now in wait queue', you)
-                    games.$watch(function(event) {
-                        console.log(event)
+                    waiting.$loaded(function() {
+                        do {
+                            playerArrival(waiting.game).then(
+                                function(game) {
+// another player arrived and created a game
+                                    console.log(game)
+                                },
+                                function(failure) { console.error(failure) },
+                                function(update) { console.log(update) }
+                            )
+                        } while (continueWaiting())
                     })
-/*
-                    game.then(
-                        function(found) {
-                            $scope.yourTurn = $scope.player.name === whoseTurn(game)
-                            $scope.$watch('yourTurn', function(newVal, oldVal) {
-                                console.log('yourTurn', newVal)
-                            })
-                            while (continueWaiting()) {
-                            } // while
-                        },
-                        function(notfound) { console.error(notfound) },
-                        function(progress) { console.log(progress) }
-                    )
-*/
                 },
                 function(failure) { console.error(failure) },
                 function(update) { console.log(update) }
