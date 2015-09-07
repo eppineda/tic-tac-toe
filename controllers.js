@@ -79,19 +79,13 @@ function($fancyModal, $firebaseArray, $firebaseObject, $q, $rootScope, $scope,
                     games.$loaded(function(success) {
                         games.$watch(
                             function(eventObj) {
-                                if ('child_added' === eventObj.event) {
-                                    var game = $firebaseObject(eventObj.key) // todo: exception
-
-                                    game.$loaded(function() {
-                                        console.log(game)
-                                        deferred.resolve(game)
-                                    })
-                                }
+                                if ('child_added' === eventObj.event)
+                                    deferred.resolve(games.$getRecord(eventObj.key))
                             },
                             function(failure) { deferred.reject(failure) }
                         )
                     })
-                }, 5000)
+                }, 1500)
                 return deferred.promise
             } // playerArrival
             var you = { who:$scope.player.name,
@@ -107,7 +101,7 @@ function($fancyModal, $firebaseArray, $firebaseObject, $q, $rootScope, $scope,
                             playerArrival(waiting.game).then(
                                 function(game) {
 // another player arrived and created a game
-                                    console.log(game)
+                                    console.log('another player has joined', game)
                                 },
                                 function(failure) { console.error(failure) },
                                 function(update) { console.log(update) }
